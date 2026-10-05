@@ -1,0 +1,20 @@
+name: security
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 8 * * 1"   # lunes 08:00 UTC, detecta CVEs nuevos aunque no haya commits
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  security:
+    uses: Maosalas/security-workflows/.github/workflows/security.yml@main
+    with:
+      fail_on_findings: false   # cámbialo a true cuando limpies los hallazgos existentes
+      # zap_target: "https://staging.tu-app.com"   # descomenta para activar DAST
